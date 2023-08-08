@@ -7,7 +7,7 @@
 - [Doador](https://github.com/recicleUSP/Donor) - Repositório do aplicativo do doador.
 - [Coletor](https://github.com/leonardo8787/Coletor) -  Repositório do aplicativo do coletor.
 - [Admistrativo](https://github.com/recicleUSP/siteAdmRecicle) -  Repositório do site de administração.
-- [Servidor de rotas](https://github.com/louzeiro/osrm_recicleUSP/edit/main/README.md) -  Repositório do site de administração.
+- [Servidor de rotas](https://github.com/louzeiro/osrm_recicleUSP/edit/main/README.md) -  Repositório das instruções para a configuração do servidor de rotas.
 
 
 ## Configuração do servidor de rotas
@@ -30,15 +30,26 @@ Inicialmente, cria-se uma pasta
     mkdir -p /srv/osrm
     cd /srv/osrm
 
-Em seguida é clonado o repositório do backend do projeto OSRM e são criadas as pastas auxiliares
+Em seguida é clonado o repositório do backend do projeto OSRM
 
     git clone https://github.com/Project-OSRM/osrm-backend.git
-    mkdir build
+
+Criada a pasta para a compilação do projeto
+
+    mkdir /srv/osrm/build
+    cd /srv/osrm/build
+    make ..
+    cmake --build .
+    sudo cmake --build . --target install
+    
 
 O próximo passo é baixar o mapa da região, nesse caso, utilizamos os dados dos estados da região sudeste. Para outras regiões do país, os dados estão disponíveis em http://download.geofabrik.de/south-america/brazil.html
     
     mkdir -p /srv/osrm/osrm-run
+    cd /srv/osrm/osrm-run
     wget http://download.geofabrik.de/south-america/brazil/sudeste-latest.osm.pbf
+    sudo osrm-extract -p osrm-backend/profiles/car.lua sudeste-latest.osm.pbf
+    
 
 Pre-process the extract with the car profile and start a routing engine HTTP server on port 5000
 
