@@ -1,60 +1,44 @@
-## Open Source Routing Machine
+# Projeto Recicla++
 
 
-[![osrm-backend CI](https://github.com/Project-OSRM/osrm-backend/actions/workflows/osrm-backend.yml/badge.svg)](https://github.com/Project-OSRM/osrm-backend/actions/workflows/osrm-backend.yml) [![Codecov](https://codecov.io/gh/Project-OSRM/osrm-backend/branch/master/graph/badge.svg)](https://codecov.io/gh/Project-OSRM/osrm-backend) [![Discord](https://img.shields.io/discord/1034487840219860992)](https://discord.gg/es9CdcCXcb)
 
-High performance routing engine written in C++ designed to run on OpenStreetMap data.
+## Repositórios
+[Página do projeto](https://www.recicle.app.br/)
+- [Doador](https://github.com/recicleUSP/Donor) - Repositório do aplicativo do doador.
+- [Coletor](https://github.com/leonardo8787/Coletor) -  Repositório do aplicativo do coletor.
+- [Admistrativo](https://github.com/recicleUSP/siteAdmRecicle) -  Repositório do site de administração.
+- [Servidor de rotas](https://github.com/louzeiro/osrm_recicleUSP/edit/main/README.md) -  Repositório do site de administração.
 
-The following services are available via HTTP API, C++ library interface and NodeJs wrapper:
-- Nearest - Snaps coordinates to the street network and returns the nearest matches
-- Route - Finds the fastest route between coordinates
-- Table - Computes the duration or distances of the fastest route between all pairs of supplied coordinates
-- Match - Snaps noisy GPS traces to the road network in the most plausible way
-- Trip - Solves the Traveling Salesman Problem using a greedy heuristic
-- Tile - Generates Mapbox Vector Tiles with internal routing metadata
 
-To quickly try OSRM use our [demo server](http://map.project-osrm.org) which comes with both the backend and a frontend on top.
+## Configuração do servidor de rotas
 
-For a quick introduction about how the road network is represented in OpenStreetMap and how to map specific road network features have a look at [this guide about mapping for navigation](https://www.mapbox.com/mapping/mapping-for-navigation/).
+O Open Source Rounting Machine - OSRM, é um projeto open-source, disponível em http://project-osrm.org/. Diferente da maioria dos servidores de roteamento, o OSRM não usa uma variante A* para calcular o caminho mais curto, mas usa hierarquias de contração ou Dijkstra multinível [[1]](https://wiki.openstreetmap.org/wiki/Open_Source_Routing_Machine). Resultando em respostas rápidas e tornando o OSRM um bom candidato para aplicações que precisam de roteamento. Suas principais caracteríscas são:
 
-Related [Project-OSRM](https://github.com/Project-OSRM) repositories:
-- [osrm-frontend](https://github.com/Project-OSRM/osrm-frontend) - User-facing frontend with map. The demo server runs this on top of the backend
-- [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions) - Text instructions from OSRM route response
-- [osrm-backend-docker](https://hub.docker.com/r/osrm/osrm-backend/) - Ready to use Docker images
+- Roteamento muito rápido
+- Altamente portátil
+- O formato de dados simples facilita a importação de conjuntos de dados personalizados em vez de dados do OpenStreetMap ou importação de dados de tráfego
+- Perfis de roteamento flexíveis (por exemplo, para diferentes modos de transporte)
+- Respeita as restrições de curva, incluindo restrições condicionais baseadas em tempo
+- Respeita as faixas de conversão
+- Instruções passo a passo localizadas fornecidas por instruções de texto OSRM
 
-## Documentation
+É disponibilizado atráves de imagem Docker, facilitando a configuração do servidor de roteamento. A seguir serão apresentados os passos utilizados para configurar o servidor utilizado no projeto.
 
-### Full documentation
+### Passo a passo
+Inicialmente, cria-se uma pasta 
 
-- [Hosted documentation](http://project-osrm.org)
-- [osrm-routed HTTP API documentation](docs/http.md)
-- [libosrm API documentation](docs/libosrm.md)
+    mkdir -p /srv/osrm
+    cd /srv/osrm
 
-## Contact
+Em seguida é clonado o repositório do backend do projeto OSRM e são criadas as pastas auxiliares
 
-- Discord: [join](https://discord.gg/es9CdcCXcb)
-- IRC: `irc.oftc.net`, channel: `#osrm` ([Webchat](https://webchat.oftc.net))
-- Mailinglist: `https://lists.openstreetmap.org/listinfo/osrm-talk`
+    git clone https://github.com/Project-OSRM/osrm-backend.git
+    mkdir build
 
-## Quick Start
-
-The easiest and quickest way to setup your own routing engine is to use Docker images we provide.
-
-There are two pre-processing pipelines available:
-- Contraction Hierarchies (CH)
-- Multi-Level Dijkstra (MLD)
-
-we recommend using MLD by default except for special use-cases such as very large distance matrices where CH is still a better fit for the time being.
-In the following we explain the MLD pipeline.
-If you want to use the CH pipeline instead replace `osrm-partition` and `osrm-customize` with a single `osrm-contract` and change the algorithm option for `osrm-routed` to `--algorithm ch`.
-
-### Using Docker
-
-We base our Docker images ([backend](https://github.com/Project-OSRM/osrm-backend/pkgs/container/osrm-backend), [frontend](https://hub.docker.com/r/osrm/osrm-frontend/)) on Debian and make sure they are as lightweight as possible. Older backend versions can be found on [Docker Hub](https://hub.docker.com/r/osrm/osrm-backend/).
-
-Download OpenStreetMap extracts for example from [Geofabrik](http://download.geofabrik.de/)
-
-    wget http://download.geofabrik.de/europe/germany/berlin-latest.osm.pbf
+O próximo passo é baixar o mapa da região, nesse caso, utilizamos os dados dos estados da região sudeste. Para outras regiões do país, os dados estão disponíveis em http://download.geofabrik.de/south-america/brazil.html
+    
+    mkdir -p /srv/osrm/osrm-run
+    wget http://download.geofabrik.de/south-america/brazil/sudeste-latest.osm.pbf
 
 Pre-process the extract with the car profile and start a routing engine HTTP server on port 5000
 
