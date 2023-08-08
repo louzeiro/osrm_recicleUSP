@@ -12,7 +12,8 @@
 
 ## Configuração do servidor de rotas
 
-O Open Source Rounting Machine - OSRM, é um projeto open-source, disponível em http://project-osrm.org/. Diferente da maioria dos servidores de roteamento, o OSRM não usa uma variante A* para calcular o caminho mais curto, mas usa hierarquias de contração ou Dijkstra multinível [[1]](https://wiki.openstreetmap.org/wiki/Open_Source_Routing_Machine). Resultando em respostas rápidas e tornando o OSRM um bom candidato para aplicações que precisam de roteamento. Suas principais caracteríscas são:
+O Open Source Rounting Machine - OSRM, disponível em http://project-osrm.org/, é uma ferramenta de otimização de rotas. Diferente da maioria dos servidores de roteamento, o OSRM não usa uma variante A* para calcular o caminho mais curto, mas usa hierarquias de contração ou Dijkstra multinível [[1]](https://wiki.openstreetmap.org/wiki/Open_Source_Routing_Machine). Resultando em respostas rápidas e tornando o OSRM um bom candidato para aplicações que precisam de roteamento. Suas principais caracteríscas são:
+
 
 - Roteamento muito rápido
 - Altamente portátil
