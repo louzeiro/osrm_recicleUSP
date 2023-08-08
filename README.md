@@ -60,5 +60,6 @@ Para testar a aplicação, realiza-se uma consulta de rota.
     curl "http://127.0.0.1:5000/route/v1/driving/-22.01353404635547,-47.88069891161758;-22.01841397120339,-47.88327352469903?steps=true"
 
 Como saída obtem-se o retorno da api,
+![](img/retornoAPI.png)
 
-    {"code":"Ok","routes":[{"geometry":"jfjkCt|l_G??","legs":[{"steps":[{"intersections":[{"out":0,"entry":[true],"bearings":[183],"location":[-42.014345,-22.995103]}],"driving_side":"right","geometry":"jfjkCt|l_G??","mode":"driving","duration":0,"maneuver":{"bearing_after":183,"location":[-42.014345,-22.995103],"bearing_before":0,"type":"depart"},"weight":0,"distance":0,"name":""},{"intersections":[{"in":0,"entry":[true],"bearings":[3],"location":[-42.014345,-22.995103]}],"driving_side":"right","geometry":"jfjkCt|l_G","mode":"driving","duration":0,"maneuver":{"bearing_after":0,"location":[-42.014345,-22.995103],"bearing_before":183,"type":"arrive"},"weight":0,"distance":0,"name":""}],"distance":0,"duration":0,"summary":"","weight":0}],"distance":0,"duration":0,"weight_name":"routability","weight":0}],"waypoints":[{"hint":"m8QpgKvEKYAAAAAAPwAAAAAAAABFAQAAAAAAAPjfLkIAAAAA2f9gQwAAAAA_AAAAAAAAAEUBAAB7BAAAd-l-_WEfof6iGbD-BWYl_QAAPwA5Zqsa","distance":3304857.164561,"name":"","location":[-42.014345,-22.995103]},{"hint":"m8QpgKvEKYAAAAAAPwAAAAAAAABFAQAAAAAAAPjfLkIAAAAA2f9gQwAAAAA_AAAAAAAAAEUBAAB7BAAAd-l-_WEfof6SBrD-9lsl_QAAPwA5Zqsa","distance":3304852.295629,"name":"","location":[-42.014345,-22.995103]}]}
+   
