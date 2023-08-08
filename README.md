@@ -57,11 +57,7 @@ Finalmente, os dados do mapa são adicionados ao container docker.
 
 Para testar a aplicação, realiza-se uma consulta de rota.
 
-## Vídeo tutorial
-
     curl "http://127.0.0.1:5000/route/v1/driving/-22.01353404635547,-47.88069891161758;-22.01841397120339,-47.88327352469903?steps=true"
 
-Como saída obtem-se o retorno da api,
-![](img/retornoAPI.png)
-
+## Vídeo tutorial
    
