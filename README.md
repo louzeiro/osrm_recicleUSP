@@ -51,114 +51,14 @@ O próximo passo é baixar o mapa da região, nesse caso, utilizamos os dados do
     wget http://download.geofabrik.de/south-america/brazil/sudeste-latest.osm.pbf
     sudo osrm-extract -p osrm-backend/profiles/car.lua sudeste-latest.osm.pbf
     
+Finalmente, os dados do mapa são adicionados ao container docker.
 
-Pre-process the extract with the car profile and start a routing engine HTTP server on port 5000
+    sudo docker run -t -i -p 5000:5000 -v "${PWD}:/data" osrm/osrm-backend osrm-routed --algorithm mld /data/sudeste-latest.osrm
 
-    docker run -t -v "${PWD}:/data" ghcr.io/project-osrm/osrm-backend osrm-extract -p /opt/car.lua /data/berlin-latest.osm.pbf || echo "osrm-extract failed"
+Para testar a aplicação, realiza-se uma consulta de rota.
 
-The flag `-v "${PWD}:/data"` creates the directory `/data` inside the docker container and makes the current working directory `"${PWD}"` available there. The file `/data/berlin-latest.osm.pbf` inside the container is referring to `"${PWD}/berlin-latest.osm.pbf"` on the host.
+    curl "http://127.0.0.1:5000/route/v1/driving/-22.01353404635547,-47.88069891161758;-22.01841397120339,-47.88327352469903?steps=true"
 
-    docker run -t -v "${PWD}:/data" ghcr.io/project-osrm/osrm-backend osrm-partition /data/berlin-latest.osrm || echo "osrm-partition failed"
-    docker run -t -v "${PWD}:/data" ghcr.io/project-osrm/osrm-backend osrm-customize /data/berlin-latest.osrm || echo "osrm-customize failed"
+Como saída obtem-se o retorno da api,
 
-Note there is no `berlin-latest.osrm` file, but multiple `berlin-latest.osrm.*` files, i.e. `berlin-latest.osrm` is not file path, but "base" path referring to set of files and there is an option to omit this `.osrm` suffix completely(e.g. `osrm-partition /data/berlin-latest`).
-
-    docker run -t -i -p 5000:5000 -v "${PWD}:/data" ghcr.io/project-osrm/osrm-backend osrm-routed --algorithm mld /data/berlin-latest.osrm
-
-Make requests against the HTTP server
-
-    curl "http://127.0.0.1:5000/route/v1/driving/13.388860,52.517037;13.385983,52.496891?steps=true"
-
-Optionally start a user-friendly frontend on port 9966, and open it up in your browser
-
-    docker run -p 9966:9966 osrm/osrm-frontend
-    xdg-open 'http://127.0.0.1:9966'
-
-In case Docker complains about not being able to connect to the Docker daemon make sure you are in the `docker` group.
-
-    sudo usermod -aG docker $USER
-
-After adding yourself to the `docker` group make sure to log out and back in again with your terminal.
-
-We support the following images in the Container Registry:
-
-Name | Description
------|------
-`latest` | `master` compiled with release flag
-`latest-assertions` | `master` compiled with with release flag, assertions enabled and debug symbols
-`latest-debug` | `master` compiled with debug flag
-`<tag>` | specific tag compiled with release flag
-`<tag>-debug` | specific tag compiled with debug flag
-
-### Building from Source
-
-The following targets Ubuntu 22.04.
-For instructions how to build on different distributions, macOS or Windows see our [Wiki](https://github.com/Project-OSRM/osrm-backend/wiki).
-
-Install dependencies
-
-```bash
-sudo apt install build-essential git cmake pkg-config \
-libbz2-dev libxml2-dev libzip-dev libboost-all-dev \
-lua5.2 liblua5.2-dev libtbb-dev
-```
-
-Compile and install OSRM binaries
-
-```bash
-mkdir -p build
-cd build
-cmake ..
-cmake --build .
-sudo cmake --build . --target install
-```
-
-### Request Against the Demo Server
-
-Read the [API usage policy](https://github.com/Project-OSRM/osrm-backend/wiki/Demo-server).
-
-Simple query with instructions and alternatives on Berlin:
-
-```
-curl "https://router.project-osrm.org/route/v1/driving/13.388860,52.517037;13.385983,52.496891?steps=true&alternatives=true"
-```
-
-### Using the Node.js Bindings
-
-The Node.js bindings provide read-only access to the routing engine.
-We provide API documentation and examples [here](docs/nodejs/api.md).
-
-You will need a modern `libstdc++` toolchain (`>= GLIBCXX_3.4.26`) for binary compatibility if you want to use the pre-built binaries.
-For older Ubuntu systems you can upgrade your standard library for example with:
-
-```
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-sudo apt-get update -y
-sudo apt-get install -y libstdc++-9-dev
-```
-
-You can install the Node.js bindings via `npm install @project-osrm/osrm` or from this repository either via
-
-    npm install
-
-which will check and use pre-built binaries if they're available for this release and your Node version, or via
-
-    npm install --build-from-source
-
-to always force building the Node.js bindings from source.
-
-#### Unscoped packages
-
-Prior to v5.27.0, the `osrm` Node package was unscoped. If you are upgrading from an old package, you will need to do the following:
-
-```
-npm uninstall osrm --save
-npm install @project-osrm/osrm --save
-```
-
-#### Package docs
-
-For usage details have a look [these API docs](docs/nodejs/api.md).
-
-An exemplary implementation by a 3rd party with Docker and Node.js can be found [here](https://github.com/door2door-io/osrm-express-server-demo).
-
+    {"code":"Ok","routes":[{"geometry":"jfjkCt|l_G??","legs":[{"steps":[{"intersections":[{"out":0,"entry":[true],"bearings":[183],"location":[-42.014345,-22.995103]}],"driving_side":"right","geometry":"jfjkCt|l_G??","mode":"driving","duration":0,"maneuver":{"bearing_after":183,"location":[-42.014345,-22.995103],"bearing_before":0,"type":"depart"},"weight":0,"distance":0,"name":""},{"intersections":[{"in":0,"entry":[true],"bearings":[3],"location":[-42.014345,-22.995103]}],"driving_side":"right","geometry":"jfjkCt|l_G","mode":"driving","duration":0,"maneuver":{"bearing_after":0,"location":[-42.014345,-22.995103],"bearing_before":183,"type":"arrive"},"weight":0,"distance":0,"name":""}],"distance":0,"duration":0,"summary":"","weight":0}],"distance":0,"duration":0,"weight_name":"routability","weight":0}],"waypoints":[{"hint":"m8QpgKvEKYAAAAAAPwAAAAAAAABFAQAAAAAAAPjfLkIAAAAA2f9gQwAAAAA_AAAAAAAAAEUBAAB7BAAAd-l-_WEfof6iGbD-BWYl_QAAPwA5Zqsa","distance":3304857.164561,"name":"","location":[-42.014345,-22.995103]},{"hint":"m8QpgKvEKYAAAAAAPwAAAAAAAABFAQAAAAAAAPjfLkIAAAAA2f9gQwAAAAA_AAAAAAAAAEUBAAB7BAAAd-l-_WEfof6SBrD-9lsl_QAAPwA5Zqsa","distance":3304852.295629,"name":"","location":[-42.014345,-22.995103]}]}
