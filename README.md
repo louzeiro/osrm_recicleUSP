@@ -1,7 +1,4 @@
-![image](https://github.com/louzeiro/osrm_recicleUSP/assets/7797969/537aaa2e-fa0a-4729-abb9-4ef5139b0858)# Projeto Recicla++
-
-
-
+# Projeto Recicla++
 ## Repositórios
 [Página do projeto](https://www.recicle.app.br/)
 - [Doador](https://github.com/recicleUSP/Donor) - Repositório do aplicativo do doador.
