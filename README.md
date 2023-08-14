@@ -36,7 +36,14 @@ Instalação do Docker
     echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    
+Testando o docker
+    
     sudo docker run hello-world
+
+Como saída 
+![image](https://github.com/louzeiro/osrm_recicleUSP/assets/7797969/dc0c4cc2-525a-41f0-9c3f-06d786b429d1)
+
 
 Inicialmente, cria-se uma pasta 
 
