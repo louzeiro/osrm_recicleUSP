@@ -63,10 +63,13 @@ Clona-se o repositório do backend do projeto OSRM
 
 Cria-se o diretório para a compilação do projeto
 
-    mkdir /srv/osrm/build
-    cd /srv/osrm/build
-    make ..
-    cmake --build .
+    mkdir /srv/osrm/osrm-backend/build
+    
+Compila-se o projeto
+    
+    cd /srv/osrm/osrm-backend/build
+    sudo make ..
+    sudo cmake --build .
     sudo cmake --build . --target install
     
 
