@@ -1,4 +1,4 @@
-# Projeto Recicla++
+![image](https://github.com/louzeiro/osrm_recicleUSP/assets/7797969/537aaa2e-fa0a-4729-abb9-4ef5139b0858)# Projeto Recicla++
 
 
 
@@ -26,7 +26,7 @@ O Open Source Rounting Machine - OSRM, disponível em http://project-osrm.org/, 
 É disponibilizado atráves de imagem Docker, facilitando a configuração do servidor de roteamento. A seguir serão apresentados os passos utilizados para configurar o servidor utilizado no projeto.
 
 ### Passo a passo
-Instalação do Docker
+#### Instalação do Docker
 
     sudo apt-get update
     sudo apt-get install ca-certificates curl gnupg
@@ -41,20 +41,27 @@ Testando o docker
     
     sudo docker run hello-world
 
-Como saída 
+No terminal ocorrerá a saída abaixo. Caso contrário, favor consultar o matérial https://docs.docker.com/engine/install/ubuntu/ 
+
 ![image](https://github.com/louzeiro/osrm_recicleUSP/assets/7797969/dc0c4cc2-525a-41f0-9c3f-06d786b429d1)
 
+#### OSRM
+Inicialmente, instala-se as dependências do projeto
+    
+    sudo apt install build-essential git cmake pkg-config \
+    libbz2-dev libxml2-dev libzip-dev libboost-all-dev \
+    lua5.2 liblua5.2-dev libtbb-dev
 
-Inicialmente, cria-se uma pasta 
+Em seguida, cria-se uma pasta para receber o repositório
 
-    mkdir -p /srv/osrm
+    sudo mkdir -p /srv/osrm
     cd /srv/osrm
 
-Em seguida é clonado o repositório do backend do projeto OSRM
+Clona-se o repositório do backend do projeto OSRM
 
-    git clone https://github.com/Project-OSRM/osrm-backend.git
+    sudo git clone https://github.com/Project-OSRM/osrm-backend.git
 
-Criada a pasta para a compilação do projeto
+Cria-se o diretório para a compilação do projeto
 
     mkdir /srv/osrm/build
     cd /srv/osrm/build
