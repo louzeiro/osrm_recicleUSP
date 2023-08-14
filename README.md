@@ -65,7 +65,7 @@ Cria-se o diretório para a compilação do projeto
 Compila-se o projeto
     
     cd /srv/osrm/osrm-backend/build
-    sudo make ..
+    sudo cmake ..
     sudo cmake --build .
     sudo cmake --build . --target install
     
