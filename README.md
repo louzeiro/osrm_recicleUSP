@@ -87,4 +87,4 @@ Para testar a aplicação, realiza-se uma consulta de rota.
     curl "http://127.0.0.1:5000/route/v1/driving/-22.01353404635547,-47.88069891161758;-22.01841397120339,-47.88327352469903?steps=true"
 
 ## Vídeo tutorial
-   
+https://www.youtube.com/watch?v=8xyJPIFywxs
