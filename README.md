@@ -72,13 +72,14 @@ Compila-se o projeto
 
 O próximo passo é baixar o mapa da região, nesse caso, utilizamos os dados dos estados da região sudeste. Para outras regiões do país, os dados estão disponíveis em http://download.geofabrik.de/south-america/brazil.html
     
-    mkdir -p /srv/osrm/osrm-run
-    cd /srv/osrm/osrm-run
-    wget http://download.geofabrik.de/south-america/brazil/sudeste-latest.osm.pbf
-    sudo osrm-extract -p osrm-backend/profiles/car.lua sudeste-latest.osm.pbf
+    cd /srv/osrm/osrm-backend/
+    sudo wget http://download.geofabrik.de/south-america/brazil/sudeste-latest.osm.pbf
+    sudo docker run -t -v "${PWD}:/data" osrm/osrm-backend osrm-extract -p /opt/car.lua /data/sudeste-latest.osm.pbf
+    sudo docker run -t -v "${PWD}:/data" osrm/osrm-backend osrm-partition /data/sudeste-latest.osrm
+    sudo docker run -t -v "${PWD}:/data" osrm/osrm-backend osrm-customize /data/sudeste-latest.osrm
     
 Finalmente, os dados do mapa são adicionados ao container docker.
-
+    
     sudo docker run -t -i -p 5000:5000 -v "${PWD}:/data" osrm/osrm-backend osrm-routed --algorithm mld /data/sudeste-latest.osrm
 
 Para testar a aplicação, realiza-se uma consulta de rota.
